@@ -1,6 +1,6 @@
 {
   "name": "tray",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "description": "Simple system tray stuff",
   "main": "src/index.js",
   "scripts": {
