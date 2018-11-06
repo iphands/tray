@@ -3,7 +3,9 @@ const cmd  = require('node-cmd');
 
 const priv = {
     mic: {},
-    vol: {},
+    vol: {
+        regex: /.*?\[(.*?)%\] \[on\]$/
+    },
     state: {
         vol: false,
         mic: { muted: false }
@@ -64,7 +66,7 @@ priv.doVolume = (line) => {
     if (line.indexOf('[off]') !== -1) {
         priv.vol.onMute();
     } else {
-        const pct = line.match(/.*?\[(.*?)%\] \[on\]$/)[1];
+        const pct = line.match(priv.vol.regex)[1];
         if (priv.state.vol !== pct) {
             priv.vol.onChange(pct);
         }
