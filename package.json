@@ -1,0 +1,16 @@
+{
+  "name": "tray",
+  "version": "0.0.0",
+  "description": "Simple system tray stuff",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "nodemon src/index.js",
+    "test": "jasmine test.js"
+  },
+  "author": "iphands@gmail.com",
+  "license": "ISC",
+  "dependencies": {
+    "node-cmd": "^3.0.0",
+    "systray": "^1.0.5"
+  }
+}
