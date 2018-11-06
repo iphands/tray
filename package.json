@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "node-cmd": "^3.0.0",
+    "process-list": "^1.2.3",
     "systray": "^1.0.5"
   }
 }

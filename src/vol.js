@@ -40,7 +40,6 @@ priv.getIcon = (num) => {
 
 monitor.events.vol.onChange((num) => {
     const key = priv.getIcon(num);
-    console.log(`key: ${key}`);
     menu.icon = icons[key];
     item.sendAction({ type: 'update-menu', menu: menu });
 });

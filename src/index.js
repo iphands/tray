@@ -1,3 +1,4 @@
 /*global require*/
-require('./vol');
+require('./xcomp');
 require('./mic');
+require('./vol');

@@ -1,12 +1,15 @@
 /*global module, require, setInterval*/
-const cmd  = require('node-cmd');
+const cmd          = require('node-cmd');
+const { snapshot } = require("process-list");
 
 const priv = {
+    xcomp: {},
     mic: {},
     vol: {
         regex: /.*?\[(.*?)%\] \[on\]$/
     },
     state: {
+        xcomp: false,
         vol: false,
         mic: { muted: false }
     }
@@ -14,6 +17,7 @@ const priv = {
 
 const pub  = {
     events: {
+        xcomp: {},
         mic: {},
         vol: {}
     }
@@ -50,6 +54,30 @@ pub.events.vol.onChange = (cb) => {
     };
 };
 
+pub.events.xcomp.up = (cb) => {
+    priv.xcomp.up = () => {
+        console.log('xcomp: up');
+        cb();
+    };
+};
+
+pub.events.xcomp.down = (cb) => {
+    priv.xcomp.down = () => {
+        console.log('xcomp: down');
+        cb();
+    };
+};
+
+priv.doXcomp = (bool) => {
+    if (priv.state.xcomp === bool) { return; }
+    priv.state.xcomp = bool;
+    if (bool) {
+        priv.xcomp.up();
+    } else {
+        priv.xcomp.down(bool);
+    }
+};
+
 priv.doMic = (line) => {
     if (line.indexOf('[off]') !== -1) {
         if (priv.mic.onMute && priv.state.mic.muted === false) {
@@ -73,7 +101,7 @@ priv.doVolume = (line) => {
     }
 };
 
-priv.handler = (err, data, stderr) => {
+priv.amixerHandler = (err, data, stderr) => {
     // console.timeEnd('cmd took');
     for (const line of data.split('\n')) {
         if (line.indexOf('  Front Left: Playback') === 0) {
@@ -86,11 +114,23 @@ priv.handler = (err, data, stderr) => {
     }
 };
 
+priv.psHandler = (tasks) => {
+    for (let i = 0; i < tasks.length; i++) {
+        if (tasks[i].name.indexOf('xcomp') === 0) {
+            priv.doXcomp(true);
+            return;
+        }
+    }
+    priv.doXcomp(false);
+    return;
+};
+
 pub.init = () => {
     if (!priv.state.running) {
         setInterval(() => {
             // console.time('cmd took');
-            cmd.get('amixer -n', priv.handler);
+            cmd.get('amixer -n', priv.amixerHandler);
+            snapshot('name').then(priv.psHandler);
         }, 500);
     }
     priv.state.running = true;
