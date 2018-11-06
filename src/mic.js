@@ -10,7 +10,7 @@ const icons = {
 const menu = {
     icon: icons.on,
     title: 'mic',
-    tooltip: 'Tips',
+    tooltip: '',
     items: [{
         title: '',
         tooltip: '',
@@ -23,7 +23,7 @@ const item = new SysTray({ menu: menu, debug: false });
 
 const monitor = require('./monitor.js');
 
-monitor.events.onMute(() => {
+monitor.events.mic.onMute(() => {
     menu.icon = icons.off;
     item.sendAction({
         type: 'update-menu',
@@ -31,7 +31,7 @@ monitor.events.onMute(() => {
     });
 });
 
-monitor.events.onUnMute(() => {
+monitor.events.mic.onUnMute(() => {
     menu.icon = icons.on;
     item.sendAction({
         type: 'update-menu',
