@@ -23,6 +23,9 @@ const menu = {
 };
 
 const item = new SysTray({ menu: menu, debug: false });
+item.onError(err => {
+    console.log(err);
+});
 
 const monitor = require('./monitor.js');
 
@@ -40,8 +43,8 @@ priv.getIcon = (num) => {
 
 monitor.events.vol.onChange((num) => {
     const key = priv.getIcon(num);
-    menu.icon = icons[key];
-    item.sendAction({ type: 'update-menu', menu: menu });
+    console.log(key);
+    utils.menuIconUpdate(item, menu, icons[key]);
 });
 
 monitor.init();

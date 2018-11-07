@@ -108,7 +108,8 @@ priv.amixerHandler = (err, data, stderr) => {
             priv.doVolume(line);
         }
 
-        if (line.indexOf('  Mono: Capture') === 0) {
+        if (line.indexOf('  Mono: Capture') === 0 ||
+            line.indexOf('  Front Left: Capture ') === 0) {
             priv.doMic(line);
         }
     }

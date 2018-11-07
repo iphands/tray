@@ -24,19 +24,11 @@ const item = new SysTray({ menu: menu, debug: false });
 const monitor = require('./monitor.js');
 
 monitor.events.mic.onMute(() => {
-    menu.icon = icons.off;
-    item.sendAction({
-        type: 'update-menu',
-        menu: menu
-    });
+    utils.menuIconUpdate(item, menu, icons.off);
 });
 
 monitor.events.mic.onUnMute(() => {
-    menu.icon = icons.on;
-    item.sendAction({
-        type: 'update-menu',
-        menu: menu
-    });
+    utils.menuIconUpdate(item, menu, icons.on);
 });
 
 monitor.init();

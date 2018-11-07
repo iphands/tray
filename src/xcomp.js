@@ -9,7 +9,7 @@ const icons = {
 };
 
 const menu = {
-    icon: icons.on,
+    icon: icons.off,
     title: 'mic',
     tooltip: '',
     items: [{
@@ -23,19 +23,11 @@ const menu = {
 const item = new SysTray({ menu: menu, debug: false });
 
 monitor.events.xcomp.up(() => {
-    menu.icon = icons.on;
-    item.sendAction({
-        type: 'update-menu',
-        menu: menu
-    });
+    utils.menuIconUpdate(item, menu, icons.on);
 });
 
 monitor.events.xcomp.down(() => {
-    menu.icon = icons.off;
-    item.sendAction({
-        type: 'update-menu',
-        menu: menu
-    });
+    utils.menuIconUpdate(item, menu, icons.off);
 });
 
 monitor.init();

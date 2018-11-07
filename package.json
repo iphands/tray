@@ -11,7 +11,9 @@
   "license": "ISC",
   "dependencies": {
     "node-cmd": "^3.0.0",
+    "nodemon": "^1.18.6",
     "process-list": "^1.2.3",
+    "rimraf": "^2.6.2",
     "systray": "^1.0.5"
   }
 }
