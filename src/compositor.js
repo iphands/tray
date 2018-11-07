@@ -4,8 +4,8 @@ const utils    = require('./utils');
 const monitor  = require('./monitor.js');
 
 const icons = {
-    on:  utils.getBaseSixtyFour('./assets/xcomp_on.png'),
-    off: utils.getBaseSixtyFour('./assets/xcomp_off.png')
+    on:  utils.getBaseSixtyFour('./assets/compositor_on.png'),
+    off: utils.getBaseSixtyFour('./assets/compositor_off.png')
 };
 
 const menu = {
@@ -22,11 +22,11 @@ const menu = {
 
 const item = new SysTray({ menu: menu, debug: false });
 
-monitor.events.xcomp.up(() => {
+monitor.events.compositor.up(() => {
     utils.menuIconUpdate(item, menu, icons.on);
 });
 
-monitor.events.xcomp.down(() => {
+monitor.events.compositor.down(() => {
     utils.menuIconUpdate(item, menu, icons.off);
 });
 

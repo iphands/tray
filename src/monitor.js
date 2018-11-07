@@ -3,13 +3,13 @@ const cmd          = require('node-cmd');
 const { snapshot } = require("process-list");
 
 const priv = {
-    xcomp: {},
+    compositor: {},
     mic: {},
     vol: {
         regex: /.*?\[(.*?)%\] \[on\]$/
     },
     state: {
-        xcomp: false,
+        compositor: false,
         vol: false,
         mic: { muted: false }
     }
@@ -17,7 +17,7 @@ const priv = {
 
 const pub  = {
     events: {
-        xcomp: {},
+        compositor: {},
         mic: {},
         vol: {}
     }
@@ -54,27 +54,27 @@ pub.events.vol.onChange = (cb) => {
     };
 };
 
-pub.events.xcomp.up = (cb) => {
-    priv.xcomp.up = () => {
-        console.log('xcomp: up');
+pub.events.compositor.up = (cb) => {
+    priv.compositor.up = () => {
+        console.log('compositor: up');
         cb();
     };
 };
 
-pub.events.xcomp.down = (cb) => {
-    priv.xcomp.down = () => {
-        console.log('xcomp: down');
+pub.events.compositor.down = (cb) => {
+    priv.compositor.down = () => {
+        console.log('compositor: down');
         cb();
     };
 };
 
-priv.doXcomp = (bool) => {
-    if (priv.state.xcomp === bool) { return; }
-    priv.state.xcomp = bool;
+priv.doCompositor = (bool) => {
+    if (priv.state.compositor === bool) { return; }
+    priv.state.compositor = bool;
     if (bool) {
-        priv.xcomp.up();
+        priv.compositor.up();
     } else {
-        priv.xcomp.down(bool);
+        priv.compositor.down(bool);
     }
 };
 
@@ -117,12 +117,12 @@ priv.amixerHandler = (err, data, stderr) => {
 
 priv.psHandler = (tasks) => {
     for (let i = 0; i < tasks.length; i++) {
-        if (tasks[i].name.indexOf('xcomp') === 0) {
-            priv.doXcomp(true);
+        if (tasks[i].name.indexOf('compton') === 0) {
+            priv.doCompositor(true);
             return;
         }
     }
-    priv.doXcomp(false);
+    priv.doCompositor(false);
     return;
 };
 
