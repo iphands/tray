@@ -1,6 +1,6 @@
 {
   "name": "@iphands/tray",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "Simple system tray stuff",
   "main": "src/index.js",
   "scripts": {
