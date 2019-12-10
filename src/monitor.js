@@ -79,7 +79,7 @@ priv.doCompositor = (bool) => {
 };
 
 priv.doMic = (line) => {
-    if (line.indexOf('[off]') !== -1) {
+    if (line.indexOf('	Mute: yes') !== -1) {
         if (priv.mic.onMute && priv.state.mic.muted === false) {
             priv.mic.onMute();
         }
@@ -103,14 +103,14 @@ priv.doVolume = (line) => {
 
 priv.amixerHandler = (err, data, stderr) => {
     // console.timeEnd('cmd took');
-    for (const line of data.split('\n')) {
-        if (line.indexOf('  Front Left: Playback') === 0) {
-            priv.doVolume(line);
-        }
+    const lines = data.split('\n');
+    for (const [ i, line ] of lines.entries()) {
+        // if (line.indexOf('  Front Left: Playback') === 0) {
+        //     priv.doVolume(line);
+        // }
 
-        if (line.indexOf('  Mono: Capture') === 0 ||
-            line.indexOf('  Front Left: Capture ') === 0) {
-            priv.doMic(line);
+        if (line.indexOf('	Description: HD Webcam C615 Analog Mono') === 0) {
+            priv.doMic(lines[i+5]);
         }
     }
 };
@@ -130,9 +130,9 @@ pub.init = () => {
     if (!priv.state.running) {
         setInterval(() => {
             // console.time('cmd took');
-            cmd.get('amixer -n', priv.amixerHandler);
+            cmd.get('pactl list', priv.amixerHandler);
             snapshot('name').then(priv.psHandler);
-        }, 500);
+        }, 1000);
     }
     priv.state.running = true;
 };

@@ -1,5 +1,5 @@
 /*global require*/
 require('./compositor');
-require('./vol');
+// require('./vol');
 require('./mic');
 
